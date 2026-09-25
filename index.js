@@ -420,33 +420,6 @@ function renderResults(result) {
   resultOutput.textContent = JSON.stringify(result, null, 2);
 }
 
-function clearPreparedData() {
-  preparedOutput.textContent = "No model inputs prepared.";
-  prepareStatus.textContent = "Load a dataset and select column roles first.";
-  resultMetrics.replaceChildren();
-  resultExtra.replaceChildren();
-  resultOutput.textContent = "No model has been run.";
-  drawEmptyChart();
-}
-
-async function loadFile(file) {
-  if (!wasmReady) {
-    setStatus(wasmStatus, "Rust/WASM is not ready yet.", "error");
-    return;
-  }
-  currentFile = file;
-  clearDataset("Reading file…");
-  try {
-    dataset = new Dataset(await file.text(), $("#delimiter").value, $("#has-headers").checked);
-    snapshot = JSON.parse(dataset.snapshotJson());
-    renderDataset();
-    setStatus(datasetStatus, `${file.name} loaded.`, "success");
-  } catch (error) {
-    clearDataset(`${file.name}: ${String(error)}`);
-    setStatus(datasetStatus, `${file.name}: ${String(error)}`, "error");
-  }
-}
-
 function modelOptions() {
   return {
     test_percent: Number($("#test-size").value),
@@ -560,16 +533,6 @@ function bindEvents() {
   window.addEventListener("resize", () => {
     if (lastPlot) drawScatterPlot(lastPlot);
   });
-}
-
-function updateAlgorithmOptions() {
-  algorithm.replaceChildren();
-  for (const [value, label] of algorithms[task.value] ?? []) {
-    const option = document.createElement("option");
-    option.value = value;
-    option.textContent = label;
-    algorithm.append(option);
-  }
 }
 
 async function start() {
