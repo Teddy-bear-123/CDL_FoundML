@@ -210,7 +210,7 @@ function updateRowRange() {
 
 async function loadFile(file) {
   if (!wasmReady) {
-    setStatus(wasmStatus, "Rust/WASM is not ready yet.", "error");
+    setStatus(wasmStatus, "WASM is not ready yet.", "error");
     return;
   }
   currentFile = file;
@@ -508,7 +508,7 @@ function bindEvents() {
   });
   $("#run-model").addEventListener("click", () => {
     if (!dataset) return;
-    prepareStatus.textContent = "Running model in Rust/WASM…";
+    prepareStatus.textContent = "Running model in WASM…";
     try {
       if (typeof dataset.runModelJson !== "function") {
         throw new Error("The WASM package is outdated; rebuild with wasm-pack build --target web --dev.");
@@ -549,9 +549,9 @@ async function start() {
       throw new Error("The generated WASM package is outdated. Rebuild with wasm-pack.");
     }
     wasmReady = true;
-    setStatus(wasmStatus, "Rust/WASM loaded.", "success");
+    setStatus(wasmStatus, "WASM loaded.", "success");
   } catch (error) {
-    setStatus(wasmStatus, `Could not load Rust/WASM: ${String(error)}`, "error");
+    setStatus(wasmStatus, `Could not load WASM: ${String(error)}`, "error");
   }
 }
 
